@@ -1,24 +1,14 @@
+from posicion import Posicion
 class CostoUniform:
     def __init__(self):
         self.respuesta =""
         self.pila = []
-        self.meta=""
     # la funcion recibe los datos del nodo que estamos expandiendo
     # con esto, crea un nodo el cual es un lista# en la que:
     # la posicion 0 y 1 son  "y" y "x" respectivamente,
     # la posicion 2 es el cosot acumulado, y 
     # la posicion 3 es una lista con el camino recorrido
-
-    """ def index(self,Matriz, buscar):
-        index = (0,0)
-        for y  in range(len(Matriz)):
-            fila = Matriz[y]
-            for x in range(fila):
-                dato = fila[x]
-                if (dato == buscar):
-                    index = (y,x)"""
-
-    """ 
+    """
     0 -> vacio
     1 -> pinocho 
     2 -> cigarrillos
@@ -36,7 +26,7 @@ class CostoUniform:
         if (y >= 0 and y<5 and x>=0 and x < 5):
             new = self.newG(int(matriz[y][x]))
             if (new != 5):
-                copia.append((y,x))
+                copia.append(Posicion(y,x))
                 return [y,x,new+g ,copia]
         return [0]
 
@@ -67,9 +57,8 @@ class CostoUniform:
         newNodos.append(self.crearNodo(pos[0]+1,pos[1],g,camino,matriz)) ## moverse abajo
         newNodos.append(self.crearNodo(pos[0],pos[1]+1,g,camino,matriz)) ## moverse derecha    
         newNodos.append(self.crearNodo(pos[0],pos[1]-1,g,camino,matriz)) ## moverse izquierda
-        
 
-        for newNodo in newNodos:
+        for newNodo in newNodos: ## decide si agregar o NO un nuevo nodo a la pila
             if (newNodo != [0]):
                 self.Agregar(newNodo) 
 
@@ -81,7 +70,7 @@ class CostoUniform:
         for y, fila in enumerate(Matriz):
             for x, dato in enumerate(fila):
                 if (dato == buscar):
-                    index = (y,x)
+                    index = Posicion(y,x)
                     return index
                 
     # esta es la funcion principal
@@ -91,12 +80,9 @@ class CostoUniform:
     # expandimos nodos de la pila mientras se llega a la meta o ya no hayan mas nodos a expandir
 
     def agenteP (self,MatrizPos):
-        print(MatrizPos,"AAAAAAAAAAA")
         Pinocho = self.index(MatrizPos, 1)
-        self.meta =self.index(MatrizPos, 4)
         Meta =self.index(MatrizPos, 4)
-        print(Meta,"PINOCHOOOOOOOOOOOOOOOOOO")
-        Nodo1 = [Pinocho[0],Pinocho[1],0,[Pinocho]]
+        Nodo1 = [Pinocho.posx,Pinocho.posy,0,[Pinocho]]
 
         self.pila.append(Nodo1)
 
@@ -104,13 +90,14 @@ class CostoUniform:
         while not(isMeta):
             nodoAct =self.pila.pop()
             posAct = (nodoAct[0], nodoAct[1])
-            if (posAct == Meta):
+            metaAux = (Meta.posx , Meta.posy)
+            print( posAct , "========" , metaAux)
+            if (posAct == metaAux):
                 isMeta = True
             else:
-                print(nodoAct,"este nodo actual")
                 self.Extender (nodoAct,MatrizPos)
         self.respuesta = nodoAct
-        return nodoAct
+## PRUEBA
 juego = [
     [0, 3, 0, 3, 0],
     [1, 5, 0, 0, 0],

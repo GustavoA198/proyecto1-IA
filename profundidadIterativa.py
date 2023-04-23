@@ -158,8 +158,7 @@ def profundidadIterativa(juegoo):
             print("la profundidad es:",nodoActual.profundidad)
        
         auxiliarProfundidad += 1 ## iterador
-    for i in caminoR:
-                print(i.posx, i.posy)
+    return caminoR
 
 
-profundidadIterativa(matriz)
+#profundidadIterativa(matriz)
