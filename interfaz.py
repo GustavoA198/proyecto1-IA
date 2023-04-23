@@ -47,7 +47,7 @@ matriz.place(x=125, y=50)
 
 # Crear matriz de imágenes
 #imageness =[PhotoImage(file="pinocho80.gif")]
-imageness =[Image.open("pinocho.gif")]
+imageness =[Image.open("img\pinocho1.jpg")]
 imagen = imageness[0].resize((90,90), Image.ANTIALIAS)
 img = ImageTk.PhotoImage(imagen)
 
