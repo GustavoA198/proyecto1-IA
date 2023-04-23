@@ -2,6 +2,7 @@ class CostoUniform:
     def __init__(self):
         self.respuesta =""
         self.pila = []
+        self.meta=""
     # la funcion recibe los datos del nodo que estamos expandiendo
     # con esto, crea un nodo el cual es un lista# en la que:
     # la posicion 0 y 1 son  "y" y "x" respectivamente,
@@ -32,7 +33,7 @@ class CostoUniform:
 
     def crearNodo (self,y,x,g,camino, matriz):
         copia = camino.copy()
-        if (y >= 0 and y<4 and x>=0 and x < 5):
+        if (y >= 0 and y<5 and x>=0 and x < 5):
             new = self.newG(int(matriz[y][x]))
             if (new != 5):
                 copia.append((y,x))
@@ -92,14 +93,14 @@ class CostoUniform:
     def agenteP (self,MatrizPos):
         print(MatrizPos,"AAAAAAAAAAA")
         Pinocho = self.index(MatrizPos, 1)
+        self.meta =self.index(MatrizPos, 4)
         Meta =self.index(MatrizPos, 4)
-        print(Pinocho,"PINOCHOOOOOOOOOOOOOOOOOO")
+        print(Meta,"PINOCHOOOOOOOOOOOOOOOOOO")
         Nodo1 = [Pinocho[0],Pinocho[1],0,[Pinocho]]
 
         self.pila.append(Nodo1)
 
         isMeta = False
-
         while not(isMeta):
             nodoAct =self.pila.pop()
             posAct = (nodoAct[0], nodoAct[1])
@@ -117,6 +118,6 @@ juego = [
     [0, 0, 0, 2, 0],
     [0, 0, 0, 0, 0]]
 #print(juego)
-#p = CostoUniform()
-#p.agenteP(juego)
-#print(p.respuesta , "PPPPPPPPPP")  
+p = CostoUniform()
+p.agenteP(juego)
+print(p.respuesta , "PPPPPPPPPP")  

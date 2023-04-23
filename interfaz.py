@@ -14,6 +14,7 @@ from CostoUniforme import CostoUniform
 5 -> sin camino """
 
 listaImg = ["img/vacio.jpg","img/pinocho1.jpg", "img\cigarrillo blanco.jpg","img/zorroBlanco.jpg","img/gepetoblanco.jpg","img\cigarrillo verde.jpg"]
+listaImgRes = ["img/gepetoverde.jpg","img/piverde.jpg", "img/gepetoverde.jpg","img/zorroverde.jpg","img/gepetoverde.jpg","img\cigarrillo verde.jpg"]
 # Funciones para los botones de búsqueda y carga de matriz
 def buscar_1():
     pass # Aquí va la lógica para Amplitud
@@ -24,8 +25,8 @@ def buscar_2():
     pinocho = CostoUniform()
     pinocho.agenteP(mat)
     res = pinocho.respuesta
-
-    print(res)
+    print (pinocho.meta, "METTTTTTTA PINO")
+    dibujarRespuesta(0,res[3],mat)
 
 def buscar_3():
     pass # Aquí va la lógica para Profundidad
@@ -38,8 +39,6 @@ def cargar_matriz():
     print("la ruta es ",ruta)
     global mat
     mat = Matrizz.crearMat(ruta).copy()
-    print(mat,"MATRIZZZZZZZZZZZZZZZZZZZZZZZZZXXXXXXXXXXXXXXXXXXXXXXXXX")
-    crearImagenes(listaImg)
     dibujar(0,0,mat) 
 
 # Crear ventana
@@ -66,14 +65,18 @@ matriz.place(x=125, y=50)
 
 # Crear lista de imágenes
 
-imgObjects = []
+
 def crearImagenes(listImg):
+    imgObjects = []
     for img in listImg:
         imageness =[Image.open(img)]
         imagen = imageness[0].resize((90,90), Image.ANTIALIAS)
         image = ImageTk.PhotoImage(imagen)
         imgObjects.append(image)
+    return imgObjects
 
+imgObjects = crearImagenes(listaImg)
+imgObjectsRes = crearImagenes(listaImgRes)
 
 #imageness =[PhotoImage(file="pinocho80.gif")]
 
@@ -89,6 +92,17 @@ def dibujar(fila, columna,matrixxxxx):
         aux=int(matrixxxxx[fila][columna])
         Label(matriz, image=imgObjects[aux],background="gray").grid(row=fila, column=columna)
     matriz.after(100, lambda: dibujar(fila, columna+1,matrixxxxx))
+
+def dibujarRespuesta(index,lista,matrix):
+    if index < len(lista):
+        pos = lista[index]
+        x= pos[0]
+        y= pos[1]
+        aux = matrix[x][y]
+        Label(matriz, image=imgObjectsRes[aux],background="gray").grid(row=x, column=y)
+        matriz.after(100, lambda: dibujarRespuesta(index+1,lista,matrix))
+
+
 
 
           
