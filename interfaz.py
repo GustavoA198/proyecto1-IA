@@ -3,16 +3,32 @@ from PIL import Image, ImageTk
 import time
 from tkinter import filedialog as FileDialog
 import matriz as Matrizz
+from CostoUniforme import CostoUniform
 
+""" 
+0 -> vacio
+1 -> pinocho 
+2 -> cigarrillos
+3 -> zorro
+4 -> geppeto
+5 -> sin camino """
+
+listaImg = ["img/vacio.jpg","img/pinocho1.jpg", "img\cigarrillo blanco.jpg","img/zorroBlanco.jpg","img/gepetoblanco.jpg","img\cigarrillo verde.jpg"]
 # Funciones para los botones de búsqueda y carga de matriz
 def buscar_1():
-    pass # Aquí va la lógica para la búsqueda 1
+    pass # Aquí va la lógica para Amplitud
 
 def buscar_2():
-    pass # Aquí va la lógica para la búsqueda 2
+    # Aquí va la lógica para Costo Uniforme
+    print(mat , "MAAAAAAAS")
+    pinocho = CostoUniform()
+    pinocho.agenteP(mat)
+    res = pinocho.respuesta
+
+    print(res)
 
 def buscar_3():
-    pass # Aquí va la lógica para la búsqueda 3
+    pass # Aquí va la lógica para Profundidad
 
 def cargar_matriz():
     ruta = FileDialog.askopenfilename(title="Abrir un fichero",initialdir="C:",
@@ -20,8 +36,11 @@ def cargar_matriz():
                                                     ("Ficheros de CSV","*.csv"),
                                                     ("Todos los ficheros", "*.*"),)) 
     print("la ruta es ",ruta)
-    mat = Matrizz.crearMat(ruta)
-    print("sadas",mat)
+    global mat
+    mat = Matrizz.crearMat(ruta).copy()
+    print(mat,"MATRIZZZZZZZZZZZZZZZZZZZZZZZZZXXXXXXXXXXXXXXXXXXXXXXXXX")
+    crearImagenes(listaImg)
+    dibujar(0,0,mat) 
 
 # Crear ventana
 ventana = Tk()
@@ -45,23 +64,32 @@ btn_cargar.place(x=750, y=10)
 matriz = Frame(ventana, width=600, height=600)
 matriz.place(x=125, y=50)
 
-# Crear matriz de imágenes
-#imageness =[PhotoImage(file="pinocho80.gif")]
-imageness =[Image.open("pinocho.gif")]
-imagen = imageness[0].resize((90,90), Image.ANTIALIAS)
-img = ImageTk.PhotoImage(imagen)
+# Crear lista de imágenes
 
-def dibujar(fila, columna):    
+imgObjects = []
+def crearImagenes(listImg):
+    for img in listImg:
+        imageness =[Image.open(img)]
+        imagen = imageness[0].resize((90,90), Image.ANTIALIAS)
+        image = ImageTk.PhotoImage(imagen)
+        imgObjects.append(image)
+
+
+#imageness =[PhotoImage(file="pinocho80.gif")]
+
+
+def dibujar(fila, columna,matrixxxxx): 
     if fila >= 5:
         return
     if columna >= 5:
         fila += 1
         columna = 0
     if columna < 5 and fila < 5:
-        Label(matriz, image=img,background="Blue").grid(row=fila, column=columna)
-    matriz.after(100, lambda: dibujar(fila, columna+1))
+        ##aux = matriz[fila][columna]
+        aux=int(matrixxxxx[fila][columna])
+        Label(matriz, image=imgObjects[aux],background="gray").grid(row=fila, column=columna)
+    matriz.after(100, lambda: dibujar(fila, columna+1,matrixxxxx))
 
-dibujar(0,0) 
 
           
 
