@@ -1,15 +1,5 @@
-class nodo:
-    def __init__(self, pos, recorridos, camino, costo):
-        self.pos = pos
-        self.recorridos = recorridos
-        self.camino = camino
-        self.costo = costo
-
-
-class posicion:
-    def __init__(self, posx, posy):
-        self.posx = posx
-        self.posy = posy
+from nodo import Nodo as nodo
+from posicion import Posicion as posicion
 
 """ 
 0 -> vacio
