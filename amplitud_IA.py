@@ -9,7 +9,7 @@ from posicion import Posicion as posicion
 4 -> geppeto
 5 -> sin camino """
 
-juego = [
+matriz = [
     [0, 3, 0, 3, 0],
     [1, 5, 0, 0, 0],
     [0, 0, 5, 5, 4],
@@ -26,7 +26,7 @@ def buscarPinocho(matriz):
                 return fila, columna
             
 #calculo del costo de pasar por la casilla
-def costoAcumulado(posicionN):
+def costoAcumulado(posicionN, juego):
     costoN = 0
     if juego[posicionN.posx][posicionN.posy] == 0:
         costoN += 1
@@ -36,82 +36,78 @@ def costoAcumulado(posicionN):
         costoN += juego[posicionN.posx][posicionN.posy] 
     return costoN
 
-# nodo inicial
-pinocho = buscarPinocho(juego)
-pos = posicion(pinocho[0], pinocho[1])
-inicio = nodo(pos, [], [pos], 0) #raiz
+
 
 #expandir el nodo de arriba
-def arriba(nodoActual, cola):
+def arriba(nodoActual, cola, juego):
     if (nodoActual.pos.posy > 0):
         posicionNueva = posicion(nodoActual.pos.posx, nodoActual.pos.posy-1)
-        recorridoA = nodoActual.recorridos.copy()
         caminoA = nodoActual.camino.copy()
         costos = nodoActual.costo
         #calculo del costo de pasar por la casilla
-        costos += costoAcumulado(posicionNueva)
+        costos += costoAcumulado(posicionNueva,juego)
 
         if juego[posicionNueva.posx][posicionNueva.posy] != 5:
-            recorridoA.append(nodoActual.pos)
             caminoA.append(posicionNueva)
-            nuevoNodo = nodo(posicionNueva, recorridoA, caminoA, costos)
+            nuevoNodo = nodo(posicionNueva, caminoA, costos)
             cola.append(nuevoNodo)            
             nodosExpandidos.append((nuevoNodo.pos.posx, nuevoNodo.pos.posy))
 
 #expandir el nodo de abajo
-def abajo(nodoActual, cola):
+def abajo(nodoActual, cola, juego):
     if (nodoActual.pos.posy < len(juego)-1):
         posicionNueva = posicion(nodoActual.pos.posx, nodoActual.pos.posy+1)
-        recorridoA = nodoActual.recorridos.copy()
         caminoA = nodoActual.camino.copy()
         costos = nodoActual.costo
         #calculo del costo de pasar por la casilla
-        costos += costoAcumulado(posicionNueva) 
+        costos += costoAcumulado(posicionNueva, juego) 
 
         if juego[posicionNueva.posx][posicionNueva.posy] != 5:
-            recorridoA.append(nodoActual.pos)
             caminoA.append(posicionNueva)
-            nuevoNodo = nodo(posicionNueva, recorridoA, caminoA, costos)
+            nuevoNodo = nodo(posicionNueva, caminoA, costos)
             cola.append(nuevoNodo)            
             nodosExpandidos.append((nuevoNodo.pos.posx, nuevoNodo.pos.posy))
 
 #expandir el nodo de la izquierda
-def izquierda(nodoActual, cola):
+def izquierda(nodoActual, cola, juego):
     if (nodoActual.pos.posx > 0):
         posicionNueva = posicion(nodoActual.pos.posx-1, nodoActual.pos.posy)
-        recorridoA = nodoActual.recorridos.copy()
         caminoA = nodoActual.camino.copy()
         costos = nodoActual.costo
         #calculo del costo de pasar por la casilla
-        costos += costoAcumulado(posicionNueva)
+        costos += costoAcumulado(posicionNueva, juego)
 
         if juego[posicionNueva.posx][posicionNueva.posy] != 5:
-            recorridoA.append(nodoActual.pos)
             caminoA.append(posicionNueva)
-            nuevoNodo = nodo(posicionNueva, recorridoA, caminoA, costos)
+            nuevoNodo = nodo(posicionNueva, caminoA, costos)
             cola.append(nuevoNodo)            
             nodosExpandidos.append((nuevoNodo.pos.posx, nuevoNodo.pos.posy))
             
 
 #expandir el nodo de la derecha
-def derecha(nodoActual, cola):
+def derecha(nodoActual, cola, juego):
     if nodoActual.pos.posx < len(juego)-1:
         posicionNueva = posicion(nodoActual.pos.posx+1, nodoActual.pos.posy)
-        recorridoA = nodoActual.recorridos.copy()
         caminoA = nodoActual.camino.copy()
         costos = nodoActual.costo
         #calculo del costo de pasar por la casilla
-        costos += costoAcumulado(posicionNueva)
+        costos += costoAcumulado(posicionNueva, juego)
 
         if juego[posicionNueva.posx][posicionNueva.posy] != 5:
-            recorridoA.append(nodoActual.pos)
             caminoA.append(posicionNueva)
-            nuevoNodo = nodo(posicionNueva, recorridoA, caminoA, costos)
+            nuevoNodo = nodo(posicionNueva, caminoA, costos)
             cola.append(nuevoNodo)
             nodosExpandidos.append((nuevoNodo.pos.posx, nuevoNodo.pos.posy))
 
+
+
 nodosExpandidos = [] # lista para guardar una upla con los indices x y y de los nodos expandidos
-def busquedaAmplitud():    
+def busquedaAmplitud(juegoo):    
+    # nodo inicial
+    pinocho = buscarPinocho(juegoo)
+    pos = posicion(pinocho[0], pinocho[1])
+    inicio = nodo(pos, [pos], 0) #raiz
+
     cola = []
     cola.append(inicio)  # añado el nodo raiz
     nodosExpandidos.append((inicio.pos.posx, inicio.pos.posy))
@@ -127,25 +123,25 @@ def busquedaAmplitud():
         posY = nodoActual.pos.posy
         
         # paro si encontré a gepetto
-        if juego[posX][posY] == 4:
+        if juegoo[posX][posY] == 4:
             print("Encontre")
             break
         #print(nodoActual.costo , "costo")  
         
         #arriba
-        arriba(nodoActual, cola)                
+        arriba(nodoActual, cola, juegoo)                
         
         # abajo
-        abajo(nodoActual, cola)        
+        abajo(nodoActual, cola, juegoo)        
 
         
         if iterador == 0:                  
-            izquierda(nodoActual, cola)  # izquierda              
-            derecha(nodoActual, cola) # derecha
+            izquierda(nodoActual, cola, juegoo)  # izquierda              
+            derecha(nodoActual, cola, juegoo) # derecha
             iterador = 1
         else:
-            derecha(nodoActual, cola) # derecha
-            izquierda(nodoActual, cola)  # izquierda
+            derecha(nodoActual, cola, juegoo) # derecha
+            izquierda(nodoActual, cola, juegoo)  # izquierda
             iterador = 0
 
     #imprimir los nodos expandidos
@@ -158,4 +154,4 @@ def busquedaAmplitud():
     print("el costo es:",nodoActual.costo)
 
 
-busquedaAmplitud()
+busquedaAmplitud(matriz)

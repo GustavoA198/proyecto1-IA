@@ -1,15 +1,5 @@
-class nodo:
-    def __init__(self, pos, camino, profundidad, costo):
-        self.pos = pos
-        self.camino = camino
-        self.profundidad = profundidad
-        self.costo = costo
-
-
-class posicion:
-    def __init__(self, posx, posy):
-        self.posx = posx
-        self.posy = posy
+from nodoProfundidad import NodoProfundidad as nodo
+from posicion import Posicion as posicion
 
 """ 
 0 -> vacio
@@ -19,7 +9,7 @@ class posicion:
 4 -> geppeto
 5 -> sin camino """
 
-juego = [
+matriz= [
     [0, 3, 0, 3, 0],
     [1, 5, 0, 0, 0],
     [0, 0, 5, 5, 4],
@@ -44,7 +34,7 @@ def buscarPinocho(matriz):
                 return fila, columna
             
 #calculo del costo de pasar por la casilla
-def costoAcumulado(posicionN):
+def costoAcumulado(posicionN, juego):
     costoN = 0
     if juego[posicionN.posx][posicionN.posy] == 0:
         costoN += 1
@@ -64,12 +54,14 @@ def maxProfundidad(profundidad1, profundidad2):
         r = profundidad2
         return r
 
-# nodo inicial
-pinocho = buscarPinocho(juego)
-pos = posicion(pinocho[0], pinocho[1])
-inicio = nodo(pos, [pos], 0, 0)
 
-def profundidadIterativa():
+
+def profundidadIterativa(juegoo):
+    # nodo inicial
+    pinocho = buscarPinocho(juegoo)
+    pos = posicion(pinocho[0], pinocho[1])
+    inicio = nodo(pos, [pos], 0, 0)
+
     maxPro = 0 # Variable que sirve para ver la profundidad a la que esta el ultimo nodo expueto
     auxiliarProfundidad = 0  
     encontre = False  
@@ -89,7 +81,7 @@ def profundidadIterativa():
             posY = nodoActual.pos.posy
             
             # paro si encontré a gepetto
-            if juego[posX][posY] == 4:
+            if juegoo[posX][posY] == 4:
                 print("Encontre")
                 encontre  = True
                 caminoR = nodoActual.camino
@@ -103,9 +95,9 @@ def profundidadIterativa():
                 caminoA = nodoActual.camino.copy()
                 costos = nodoActual.costo
                 #calculo del costo de pasar por la casilla
-                costos += costoAcumulado(posicionNueva)
+                costos += costoAcumulado(posicionNueva, juegoo)
 
-                if buscarElemento(nodoActual.camino, posicionNueva) == False and juego[posicionNueva.posx][posicionNueva.posy] != 5:
+                if buscarElemento(nodoActual.camino, posicionNueva) == False and juegoo[posicionNueva.posx][posicionNueva.posy] != 5:
                     caminoA.append(posicionNueva)
                     nuevoNodo = nodo(posicionNueva, caminoA, profundidadA, costos)
                     pila.append(nuevoNodo)
@@ -113,15 +105,15 @@ def profundidadIterativa():
                     
 
             # abajo
-            if (nodoActual.pos.posy < len(juego)-1):
+            if (nodoActual.pos.posy < len(juegoo)-1):
                 posicionNueva = posicion(nodoActual.pos.posx, nodoActual.pos.posy+1)
                 profundidadA = nodoActual.profundidad + 1
                 caminoA = nodoActual.camino.copy()
                 costos = nodoActual.costo
                 #calculo del costo de pasar por la casilla
-                costos += costoAcumulado(posicionNueva)
+                costos += costoAcumulado(posicionNueva, juegoo)
 
-                if buscarElemento(nodoActual.camino, posicionNueva) == False and juego[posicionNueva.posx][posicionNueva.posy] != 5:
+                if buscarElemento(nodoActual.camino, posicionNueva) == False and juegoo[posicionNueva.posx][posicionNueva.posy] != 5:
                     caminoA.append(posicionNueva)
                     nuevoNodo = nodo(posicionNueva, caminoA, profundidadA, costos)
                     pila.append(nuevoNodo)
@@ -136,24 +128,24 @@ def profundidadIterativa():
                 caminoA = nodoActual.camino.copy()
                 costos = nodoActual.costo
                 #calculo del costo de pasar por la casilla
-                costos += costoAcumulado(posicionNueva)
+                costos += costoAcumulado(posicionNueva, juegoo)
 
-                if buscarElemento(nodoActual.camino, posicionNueva) == False and juego[posicionNueva.posx][posicionNueva.posy] != 5:
+                if buscarElemento(nodoActual.camino, posicionNueva) == False and juegoo[posicionNueva.posx][posicionNueva.posy] != 5:
                     caminoA.append(posicionNueva)
                     nuevoNodo = nodo(posicionNueva, caminoA, profundidadA, costos)
                     pila.append(nuevoNodo)
                     maxPro = maxProfundidad(int(profundidadA), maxPro) 
 
             # derecha
-            if nodoActual.pos.posx < len(juego)-1:
+            if nodoActual.pos.posx < len(juegoo)-1:
                 posicionNueva = posicion(nodoActual.pos.posx+1, nodoActual.pos.posy)
                 profundidadA = nodoActual.profundidad + 1
                 caminoA = nodoActual.camino.copy()
                 costos = nodoActual.costo
                 #calculo del costo de pasar por la casilla
-                costos += costoAcumulado(posicionNueva)
+                costos += costoAcumulado(posicionNueva, juegoo)
 
-                if buscarElemento(nodoActual.camino, posicionNueva) == False and juego[posicionNueva.posx][posicionNueva.posy] != 5:
+                if buscarElemento(nodoActual.camino, posicionNueva) == False and juegoo[posicionNueva.posx][posicionNueva.posy] != 5:
                     caminoA.append(posicionNueva)
                     nuevoNodo = nodo(posicionNueva, caminoA, profundidadA, costos)
                     pila.append(nuevoNodo)
@@ -170,4 +162,4 @@ def profundidadIterativa():
                 print(i.posx, i.posy)
 
 
-profundidadIterativa()
+profundidadIterativa(matriz)
