@@ -64,7 +64,7 @@ def cargar_matriz():
 
 # Crear ventana
 ventana = Tk()
-ventana.title("Proyecto de IA")
+ventana.title("Proyecto de IA" )
 ventana.config(height=570,width=850)
 
 # Crear botones de búsqueda y carga de matriz
