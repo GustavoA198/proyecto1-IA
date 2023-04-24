@@ -20,7 +20,7 @@ matriz = [
 #buscar a pinocho que es el numero 1 en la matriz
 def buscarPinocho(matriz):
     for fila in range(len(matriz)):
-        for columna in range(len(matriz)):
+        for columna in range(len(matriz[0])):
             if matriz[fila][columna] == 1:
                 print("fila:", fila, ",columna:", columna)
                 return fila, columna
@@ -55,7 +55,7 @@ def arriba(nodoActual, cola, juego):
 
 #expandir el nodo de abajo
 def abajo(nodoActual, cola, juego):
-    if (nodoActual.pos.posy < len(juego)-1):
+    if (nodoActual.pos.posy < len(juego[0])-1):
         posicionNueva = posicion(nodoActual.pos.posx, nodoActual.pos.posy+1)
         caminoA = nodoActual.camino.copy()
         costos = nodoActual.costo

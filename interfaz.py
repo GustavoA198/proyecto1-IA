@@ -1,3 +1,4 @@
+import time
 from tkinter import *
 from PIL import Image, ImageTk
 from tkinter import filedialog as FileDialog
@@ -20,22 +21,25 @@ listaImgRes = ["img/verde.jpg","img/piverde.jpg", "img\cigarrillo verde.jpg","im
 # Funciones para los botones de búsqueda y carga de matriz
 def buscar_1():
     # Aquí va la lógica para Amplitud
-    dibujar(10,0,0,mat)
+    dibujar(Tam,0,0,0,mat)
     camino = amp.busquedaAmplitud(mat)
+    time.sleep(0.2)
     dibujarRespuesta(0,camino,mat)
 
 def buscar_2():
     # Aquí va la lógica para Costo Uniforme
-    dibujar(20,0,0,mat)
+    dibujar(Tam,0,0,0,mat)
     pinocho = CostoUniform()
     pinocho.agenteP(mat)
     res = pinocho.respuesta
+    time.sleep(0.2)
     dibujarRespuesta(0,res[3],mat)
 
 def buscar_3():
     # Aquí va la lógica para Profundidad
-    dibujar(10,0,0,mat)
+    dibujar(Tam,0,0,0,mat)
     camino = pIter.profundidadIterativa(mat) 
+    time.sleep(0.2)
     dibujarRespuesta(0,camino,mat)
 
 
@@ -46,7 +50,14 @@ def cargar_matriz():
                                                     ("Todos los ficheros", "*.*"),)) 
     global mat
     mat = Matrizz.crearMat(ruta).copy()
-    dibujar(70,0,0,mat) 
+
+    global imgObjects
+    global imgObjectsRes
+    global Tam
+    Tam = int(460/max(len(mat),len(mat[0])))
+    imgObjects = crearImagenes(listaImg,Tam)
+    imgObjectsRes = crearImagenes(listaImgRes,Tam)
+    dibujar(Tam,70,0,0,mat) 
 
 # Crear ventana
 ventana = Tk()
@@ -66,32 +77,31 @@ btn_busq_3.place(x=355, y=10)
 btn_cargar.place(x=750, y=10)
 
 # Crear espacio para la matriz de imágenes
-matriz = Frame(ventana, width=600, height=600)
+matriz = Frame(ventana, width=570, height=600)
 matriz.place(x=125, y=50)
 
 # Crear lista de objetos de imágenes
-def crearImagenes(listImg):
+def crearImagenes(listImg,tam):
     imgObjects = []
     for img in listImg:
         imageness =[Image.open(img)]
-        imagen = imageness[0].resize((90,90), Image.ANTIALIAS)
+        imagen = imageness[0].resize((tam,tam), Image.ANTIALIAS)
         image = ImageTk.PhotoImage(imagen)
         imgObjects.append(image)
     return imgObjects
 
-imgObjects = crearImagenes(listaImg)
-imgObjectsRes = crearImagenes(listaImgRes)
 
-def dibujar(time,fila, columna,matrix): 
-    if fila >= 5:
+
+def dibujar(tam,time,fila, columna,matrix): 
+    if fila >= len(matrix):
         return
-    if columna >= 5:
+    if columna >= len(matrix[0]):
         fila += 1
         columna = 0
-    if columna < 5 and fila < 5:
+    if columna < len(matrix[0]) and fila < len(matrix):
         aux=int(matrix[fila][columna])
-        Label(matriz, image=imgObjects[aux],background="gray").grid(row=fila, column=columna)
-    matriz.after(time, lambda: dibujar(time,fila, columna+1,matrix))
+        Label(matriz, image=imgObjects[aux],background="gray",height=tam,width=tam).grid(row=fila, column=columna)
+    matriz.after(time, lambda: dibujar(tam,time,fila, columna+1,matrix))
 
 def dibujarRespuesta(index,lista,matrix):
     if index < len(lista):

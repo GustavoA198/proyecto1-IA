@@ -23,7 +23,7 @@ class CostoUniform:
 
     def crearNodo (self,y,x,g,camino, matriz):
         copia = camino.copy()
-        if (y >= 0 and y<5 and x>=0 and x < 5):
+        if (y >= 0 and y<len(matriz) and x>=0 and x < len(matriz[0])):
             new = self.newG(int(matriz[y][x]))
             if (new != 5):
                 copia.append(Posicion(y,x))
@@ -105,6 +105,6 @@ juego = [
     [0, 0, 0, 2, 0],
     [0, 0, 0, 0, 0]]
 #print(juego)
-p = CostoUniform()
-p.agenteP(juego)
-print(p.respuesta , "PPPPPPPPPP")  
+#p = CostoUniform()
+#p.agenteP(juego)
+#print(p.respuesta , "PPPPPPPPPP")  

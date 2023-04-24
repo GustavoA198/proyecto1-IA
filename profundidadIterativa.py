@@ -10,11 +10,11 @@ from posicion import Posicion as posicion
 5 -> sin camino """
 
 matriz= [
-    [0, 3, 0, 3, 0],
-    [1, 5, 0, 0, 0],
-    [0, 0, 5, 5, 4],
-    [0, 0, 0, 2, 0],
-    [0, 0, 0, 0, 0]
+    [0, 3, 0, 3],
+    [1, 5, 0, 0],
+    [0, 0, 5, 5],
+    [0, 0, 0, 2],
+    [0, 0, 0, 4]
 ]
 
 # ayuda a comparar la lista de recorridos con una posicion,para evitar expandir el mismo nodo dos veces
@@ -28,7 +28,7 @@ def buscarElemento(lista, elemento):
 #buscar a pinocho que es el numero 1 en la matriz
 def buscarPinocho(matriz):
     for fila in range(len(matriz)):
-        for columna in range(len(matriz)):
+        for columna in range(len(matriz[0])):
             if matriz[fila][columna] == 1:
                 print("fila:", fila, ",columna:", columna)
                 return fila, columna
@@ -105,7 +105,7 @@ def profundidadIterativa(juegoo):
                     
 
             # abajo
-            if (nodoActual.pos.posy < len(juegoo)-1):
+            if (nodoActual.pos.posy < len(juegoo[0])-1):
                 posicionNueva = posicion(nodoActual.pos.posx, nodoActual.pos.posy+1)
                 profundidadA = nodoActual.profundidad + 1
                 caminoA = nodoActual.camino.copy()
@@ -158,7 +158,11 @@ def profundidadIterativa(juegoo):
             print("la profundidad es:",nodoActual.profundidad)
        
         auxiliarProfundidad += 1 ## iterador
+    print(len(juegoo), "llllll" , len(juegoo[0]))
+    #for i in caminoR:
+    #           print(i.posx, i.posy)
     return caminoR
+    
 
 
-#profundidadIterativa(matriz)
+##profundidadIterativa(matriz)
