@@ -21,14 +21,14 @@ listaImgRes = ["img/verde.jpg","img/piverde.jpg", "img\cigarrillo verde.jpg","im
 # Funciones para los botones de búsqueda y carga de matriz
 def buscar_1():
     # Aquí va la lógica para Amplitud
-    Dibujar2(mat)
+    dibujar(Tam,0,0,0,mat)
     camino = amp.busquedaAmplitud(mat)
     time.sleep(0.2)
     dibujarRespuesta(0,camino,mat)
 
 def buscar_2():
     # Aquí va la lógica para Costo Uniforme
-    Dibujar2(mat)
+    dibujar(Tam,0,0,0,mat)
     pinocho = CostoUniform()
     pinocho.agenteP(mat)
     res = pinocho.respuesta
@@ -37,7 +37,7 @@ def buscar_2():
 
 def buscar_3():
     # Aquí va la lógica para Profundidad
-    Dibujar2(mat)
+    dibujar(Tam,0,0,0,mat)
     camino = pIter.profundidadIterativa(mat) 
     time.sleep(0.2)
     dibujarRespuesta(0,camino,mat)
@@ -50,9 +50,6 @@ def cargar_matriz():
                                                     ("Todos los ficheros", "*.*"),)) 
     global mat
     mat = Matrizz.crearMat(ruta).copy()
-    global matriz 
-    matriz = Frame(ventana, width=570, height=600)
-    matriz.place(x=125, y=50)
 
     global imgObjects
     global imgObjectsRes
@@ -60,7 +57,7 @@ def cargar_matriz():
     Tam = int(460/max(len(mat),len(mat[0])))
     imgObjects = crearImagenes(listaImg,Tam)
     imgObjectsRes = crearImagenes(listaImgRes,Tam)
-    dibujar(70,0,0,mat) 
+    dibujar(Tam,70,0,0,mat) 
 
 # Crear ventana
 ventana = Tk()
@@ -80,7 +77,8 @@ btn_busq_3.place(x=355, y=10)
 btn_cargar.place(x=750, y=10)
 
 # Crear espacio para la matriz de imágenes
-
+matriz = Frame(ventana, width=570, height=600)
+matriz.place(x=125, y=50)
 
 # Crear lista de objetos de imágenes
 def crearImagenes(listImg,tam):
@@ -94,7 +92,7 @@ def crearImagenes(listImg,tam):
 
 
 
-def dibujar(time,fila, columna,matrix): 
+def dibujar(tam,time,fila, columna,matrix): 
     if fila >= len(matrix):
         return
     if columna >= len(matrix[0]):
@@ -102,22 +100,14 @@ def dibujar(time,fila, columna,matrix):
         columna = 0
     if columna < len(matrix[0]) and fila < len(matrix):
         aux=int(matrix[fila][columna])
-        Label(matriz, image=imgObjects[aux]).grid(row=fila, column=columna)
-    matriz.after(time, lambda: dibujar(time,fila, columna+1,matrix))
-
-def Dibujar2(matrizz):
-    for i in range (len(matrizz)):
-        for j in range (len(matrizz[i])):
-            aux=int(matrizz[i][j])
-            Label(matriz, image=imgObjects[aux]).grid(row=i, column=j)
-    
-
+        Label(matriz, image=imgObjects[aux],background="gray",height=tam,width=tam).grid(row=fila, column=columna)
+    matriz.after(time, lambda: dibujar(tam,time,fila, columna+1,matrix))
 
 def dibujarRespuesta(index,lista,matrix):
     if index < len(lista):
         pos = lista[index]
         aux = matrix[pos.posx][pos.posy]
-        Label(matriz, image=imgObjectsRes[aux]).grid(row=pos.posx, column=pos.posy)
+        Label(matriz, image=imgObjectsRes[aux],background="gray").grid(row=pos.posx, column=pos.posy)
         matriz.after(100, lambda: dibujarRespuesta(index+1,lista,matrix))
 
 # Iniciar bucle principal de la ventana
