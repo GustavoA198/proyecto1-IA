@@ -6,6 +6,7 @@ import matriz as Matrizz
 from CostoUniforme import CostoUniform
 import amplitud_IA as amp
 import profundidadIterativa as pIter
+import numpy as np 
 
 """ 
 0 -> vacio
@@ -36,7 +37,7 @@ def buscar_2():
     dibujarRespuesta(0,res[3],mat)
 
 def buscar_3():
-    # Aquí va la lógica para Profundidad
+    # Aquí va la lógica para Profundidad iterativa
     Dibujar2(mat)
     camino = pIter.profundidadIterativa(mat) 
     time.sleep(0.2)
@@ -50,9 +51,15 @@ def cargar_matriz():
                                                     ("Todos los ficheros", "*.*"),)) 
     global mat
     mat = Matrizz.crearMat(ruta).copy()
+    global len_columna 
+    print("matt", mat)
+    len_columna = len([fila[0] for fila in mat])
+    print("len columna", len_columna)
+
+    #matriz global donde se dibujara la matriz cargada
     global matriz 
-    matriz = Frame(ventana, width=570, height=600)
-    matriz.place(x=125, y=50)
+    matriz = Frame(ventana, width=570, height=700)
+    matriz.place(x=70, y=70)
 
     global imgObjects
     global imgObjectsRes
@@ -74,7 +81,7 @@ btn_busq_3 = Button(ventana, text="Búsqueda por Profunfidad Iterativa", command
 btn_cargar = Button(ventana, text="Cargar matriz", command=cargar_matriz)
 
 # Colocar botones en la ventana
-btn_busq_1.place(x=20, y=10,)
+btn_busq_1.place(x=20, y=10)
 btn_busq_2.place(x=170, y=10)
 btn_busq_3.place(x=355, y=10)
 btn_cargar.place(x=750, y=10)
@@ -94,13 +101,21 @@ def crearImagenes(listImg,tam):
 
 
 
+
 def dibujar(time,fila, columna,matrix): 
+    
+    #matrix np
+    #matrizNp = np.array(matriz)
+    #filas, columnas = matriz.shape
+    # Obtener el tamaño de la primera columna (índice )
+    
+
     if fila >= len(matrix):
         return
     if columna >= len(matrix[0]):
         fila += 1
         columna = 0
-    if columna < len(matrix[0]) and fila < len(matrix):
+    if columna < len_columna and fila < len(matrix):
         aux=int(matrix[fila][columna])
         Label(matriz, image=imgObjects[aux]).grid(row=fila, column=columna)
     matriz.after(time, lambda: dibujar(time,fila, columna+1,matrix))
