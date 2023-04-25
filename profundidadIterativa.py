@@ -62,21 +62,24 @@ def profundidadIterativa(juegoo):
     pos = posicion(pinocho[0], pinocho[1])
     inicio = nodo(pos, [pos], 0, 0)
 
-    maxPro = 0 # Variable que sirve para ver la profundidad a la que esta el ultimo nodo expueto
+    maxPro = 0 # Variable que sirve para ver la profundidad a la que esta el ultimo nodo expandido
     auxiliarProfundidad = 0  
     encontre = False  
     caminoR = []
-    while (maxPro >= auxiliarProfundidad and encontre== False): 
+    while (encontre == False): 
+        print("entre OTRA ITERACION DE ITERATIVA PROFUNDIADDAKJSNFJKSNKDJF")
+        print(maxPro, ">======" , auxiliarProfundidad)
         costo = 0 #calcular el valor del costo
         pila = []
         pila.append(inicio)  # añado el nodo raiz
         # inicio de la busqueda por profundidad   
-        while (True):
+        while (maxPro <= auxiliarProfundidad):
             if len(pila) == 0:
                 print("No encontré")
                 break
             #expando el nodo actual
             nodoActual = pila.pop()
+            maxPro = nodoActual.profundidad
             posX = nodoActual.pos.posx
             posY = nodoActual.pos.posy
             
@@ -84,11 +87,11 @@ def profundidadIterativa(juegoo):
             if juegoo[posX][posY] == 4:
                 print("Encontre")
                 encontre  = True
-                caminoR = nodoActual.camino
+                caminoR = nodoActual.camino.copy()
                 break############################################################
             print(nodoActual.costo , "costo")  
             
-            # arriba
+            # izquierda
             if (nodoActual.pos.posy > 0):
                 posicionNueva = posicion(nodoActual.pos.posx, nodoActual.pos.posy-1)
                 profundidadA = nodoActual.profundidad + 1
@@ -100,11 +103,10 @@ def profundidadIterativa(juegoo):
                 if buscarElemento(nodoActual.camino, posicionNueva) == False and juegoo[posicionNueva.posx][posicionNueva.posy] != 5:
                     caminoA.append(posicionNueva)
                     nuevoNodo = nodo(posicionNueva, caminoA, profundidadA, costos)
-                    pila.append(nuevoNodo)
-                    maxPro = maxProfundidad(int(profundidadA), int(maxPro)) 
+                    pila.append(nuevoNodo) 
                     
 
-            # abajo
+            # derecha
             if (nodoActual.pos.posy < len(juegoo[0])-1):
                 posicionNueva = posicion(nodoActual.pos.posx, nodoActual.pos.posy+1)
                 profundidadA = nodoActual.profundidad + 1
@@ -121,7 +123,7 @@ def profundidadIterativa(juegoo):
                     aux = int(profundidadA)
                     maxPro = maxProfundidad(aux, maxPro2)
                     
-            # izquierda
+            # arriba
             if (nodoActual.pos.posx > 0):
                 posicionNueva = posicion(nodoActual.pos.posx-1, nodoActual.pos.posy)
                 profundidadA = nodoActual.profundidad + 1
@@ -136,7 +138,7 @@ def profundidadIterativa(juegoo):
                     pila.append(nuevoNodo)
                     maxPro = maxProfundidad(int(profundidadA), maxPro) 
 
-            # derecha
+            # abajo
             if nodoActual.pos.posx < len(juegoo)-1:
                 posicionNueva = posicion(nodoActual.pos.posx+1, nodoActual.pos.posy)
                 profundidadA = nodoActual.profundidad + 1
@@ -154,15 +156,15 @@ def profundidadIterativa(juegoo):
             
             for i in nodoActual.camino:
                 print(i.posx, i.posy)
+            print("nodo act---  fila,columna" , nodoActual.pos.posx, nodoActual.pos.posy)
             print("el costo es:",nodoActual.costo)
             print("la profundidad es:",nodoActual.profundidad)
        
         auxiliarProfundidad += 1 ## iterador
-    print(len(juegoo), "llllll" , len(juegoo[0]))
-    #for i in caminoR:
-    #           print(i.posx, i.posy)
+    for i in caminoR:
+        print(i.posx, i.posy , "RESPUESTA")
     return caminoR
     
 
 
-##profundidadIterativa(matriz)
+profundidadIterativa(matriz)

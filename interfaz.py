@@ -65,7 +65,7 @@ def cargar_matriz():
 # Crear ventana
 ventana = Tk()
 ventana.title("Proyecto de IA")
-ventana.config(height=570,width=850)
+ventana.config(height=570,width=850,background="blue")
 
 # Crear botones de búsqueda y carga de matriz
 btn_busq_1 = Button(ventana, text="Búsqueda por Amplitud", command=buscar_1)
