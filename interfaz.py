@@ -5,7 +5,7 @@ from tkinter import filedialog as FileDialog
 import matriz as Matrizz
 from CostoUniforme import CostoUniform
 import amplitud_IA as amp
-import profundidadIterativa as pIter
+import ProfundidadIterativa2 as pIter
 
 """ 
 0 -> vacio
@@ -38,7 +38,7 @@ def buscar_2():
 def buscar_3():
     # Aquí va la lógica para Profundidad
     Dibujar2(mat)
-    camino = pIter.profundidadIterativa(mat) 
+    camino = pIter.ProfundidadIterativa(mat) 
     time.sleep(0.2)
     dibujarRespuesta(0,camino,mat)
 
