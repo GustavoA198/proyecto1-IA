@@ -5,7 +5,7 @@ from tkinter import filedialog as FileDialog
 import matriz as Matrizz
 from CostoUniforme import CostoUniform
 import amplitud_IA as amp
-import ProfundidadIterativa as pIter
+import profundidadIterativa as pIter
 
 """ 
 0 -> vacio
