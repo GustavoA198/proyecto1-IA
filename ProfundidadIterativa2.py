@@ -25,13 +25,13 @@ def ExpandirNodo(nodo):
     camino = nodo.camino.copy()
     newNodos = []
     newNodos.append(crearNodo(nodo.pos.posx - 1, nodo.pos.posy,
-                    nodo.costo, nodo.profundidad, camino, matrizA))  # moverse arriba
+                    nodo.costo, nodo.profundidad, camino, matrizA))  # moverse arriba num4
     newNodos.append(crearNodo(nodo.pos.posx+1, nodo.pos.posy, nodo.costo,
-                    nodo.profundidad, camino, matrizA))  # moverse abajo
+                    nodo.profundidad, camino, matrizA))  # moverse abajo num3
     newNodos.append(crearNodo(nodo.pos.posx, nodo.pos.posy+1, nodo.costo,
-                    nodo.profundidad, camino, matrizA))  # moverse derecha
+                    nodo.profundidad, camino, matrizA))  # moverse derecha num2
     newNodos.append(crearNodo(nodo.pos.posx, nodo.pos.posy-1, nodo.costo,
-                    nodo.profundidad, camino, matrizA))  # moverse izquierda
+                    nodo.profundidad, camino, matrizA))  # moverse izquierda  num1
 
     for newNodo in newNodos:  # decide si agregar o NO un nuevo nodo a la pila
         if (newNodo != [0]):
