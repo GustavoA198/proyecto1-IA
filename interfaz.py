@@ -5,7 +5,7 @@ from tkinter import filedialog as FileDialog
 import matriz as Matrizz
 from CostoUniforme import CostoUniform
 import amplitud_IA as amp
-import ProfundidadIterativa2 as pIter
+import ProfundidadIterativa as pIter
 
 """ 
 0 -> vacio
@@ -92,8 +92,6 @@ def crearImagenes(listImg,tam):
         imgObjects.append(image)
     return imgObjects
 
-
-
 def dibujar(time,fila, columna,matrix): 
     if fila >= len(matrix):
         return
@@ -111,8 +109,6 @@ def Dibujar2(matrizz):
             aux=int(matrizz[i][j])
             Label(matriz, image=imgObjects[aux]).grid(row=i, column=j)
     
-
-
 def dibujarRespuesta(index,lista,matrix):
     if index < len(lista):
         pos = lista[index]

@@ -1,170 +1,65 @@
 from nodoProfundidad import NodoProfundidad as nodo
-from posicion import Posicion as posicion
+from posicion import Posicion
 
-""" 
-0 -> vacio
-1 -> pinocho
-2 -> cigarrillos
-3 -> zorro
-4 -> geppeto
-5 -> sin camino """
+def newG(new):
+    if new == 0:
+        return 1
+    elif new == 4:
+        return 1
+    return new
 
-matriz= [
-    [0, 3, 0, 3],
-    [1, 5, 0, 0],
-    [0, 0, 5, 5],
-    [0, 0, 0, 2],
-    [0, 0, 0, 4]
-]
+def crearNodo(y, x, g, p, camino, matriz):
+    copia = camino.copy()
+    if (y >= 0 and y < len(matriz) and x >= 0 and x < len(matriz[0])):
+        new = newG(int(matriz[y][x]))
+        if (new != 5):
+            copia.append(Posicion(y, x))
+            return nodo(Posicion(y, x), copia, p+1, new+g)
+    return [0]
 
-# ayuda a comparar la lista de recorridos con una posicion,para evitar expandir el mismo nodo dos veces
-def buscarElemento(lista, elemento):
-    for i in lista:
-        if i.posx == elemento.posx and i.posy == elemento.posy:
-            return True
-    else:
-        return False
+def ExpandirNodo(nodo):
+    camino = nodo.camino.copy()
+    newNodos = []
+    newNodos.append(crearNodo(nodo.pos.posx - 1, nodo.pos.posy,
+                    nodo.costo, nodo.profundidad, camino, matrizA))  # moverse arriba num4
+    newNodos.append(crearNodo(nodo.pos.posx+1, nodo.pos.posy, nodo.costo,
+                    nodo.profundidad, camino, matrizA))  # moverse abajo num3
+    newNodos.append(crearNodo(nodo.pos.posx, nodo.pos.posy+1, nodo.costo,
+                    nodo.profundidad, camino, matrizA))  # moverse derecha num2
+    newNodos.append(crearNodo(nodo.pos.posx, nodo.pos.posy-1, nodo.costo,
+                    nodo.profundidad, camino, matrizA))  # moverse izquierda  num1
 
-#buscar a pinocho que es el numero 1 en la matriz
-def buscarPinocho(matriz):
-    for fila in range(len(matriz)):
-        for columna in range(len(matriz[0])):
-            if matriz[fila][columna] == 1:
-                print("fila:", fila, ",columna:", columna)
-                return fila, columna
-            
-#calculo del costo de pasar por la casilla
-def costoAcumulado(posicionN, juego):
-    costoN = 0
-    if juego[posicionN.posx][posicionN.posy] == 0:
-        costoN += 1
-    elif juego[posicionN.posx][posicionN.posy] == 4: 
-        costoN += 1
-    else:
-        costoN += juego[posicionN.posx][posicionN.posy] 
-    return costoN
+    for newNodo in newNodos:  # decide si agregar o NO un nuevo nodo a la pila
+        if (newNodo != [0]):
+            Pila.append(newNodo)
 
-#def max profundidad actual
-def maxProfundidad(profundidad1, profundidad2):
-    r = 0
-    if profundidad1 > profundidad2:
-        r = profundidad1
-        return r
-    else:
-        r = profundidad2
-        return r
+def index(Matriz, buscar):
+    index = (0, 0)
+    for y, fila in enumerate(Matriz):
+        for x, dato in enumerate(fila):
+            if (dato == buscar):
+                index = Posicion(y, x)
+                return index
 
+def ProfundidadIterativa(Matriz):
+    global matrizA
+    matrizA = Matriz
+    Pinocho = index(Matriz, 1)
+    maxPro = 0
+    while True:
+        aux = []
+        aux.append(Pinocho)
+        nodoi = nodo(Pinocho, aux, 0, 0)
+        global Pila
+        Pila = []
+        Pila.append(nodoi)
 
-
-def profundidadIterativa(juegoo):
-    # nodo inicial
-    pinocho = buscarPinocho(juegoo)
-    pos = posicion(pinocho[0], pinocho[1])
-    inicio = nodo(pos, [pos], 0, 0)
-
-    maxPro = 0 # Variable que sirve para ver la profundidad a la que esta el ultimo nodo expandido
-    auxiliarProfundidad = 0  
-    encontre = False  
-    caminoR = []
-    while (encontre == False): 
-        print("entre OTRA ITERACION DE ITERATIVA PROFUNDIADDAKJSNFJKSNKDJF")
-        print(maxPro, ">======" , auxiliarProfundidad)
-        costo = 0 #calcular el valor del costo
-        pila = []
-        pila.append(inicio)  # añado el nodo raiz
-        # inicio de la busqueda por profundidad   
-        while (maxPro <= auxiliarProfundidad):
-            if len(pila) == 0:
-                print("No encontré")
-                break
-            #expando el nodo actual
-            nodoActual = pila.pop()
-            maxPro = nodoActual.profundidad
-            posX = nodoActual.pos.posx
-            posY = nodoActual.pos.posy
-            
-            # paro si encontré a gepetto
-            if juegoo[posX][posY] == 4:
-                print("Encontre")
-                encontre  = True
-                caminoR = nodoActual.camino.copy()
-                break############################################################
-            print(nodoActual.costo , "costo")  
-            
-            # izquierda
-            if (nodoActual.pos.posy > 0):
-                posicionNueva = posicion(nodoActual.pos.posx, nodoActual.pos.posy-1)
-                profundidadA = nodoActual.profundidad + 1
-                caminoA = nodoActual.camino.copy()
-                costos = nodoActual.costo
-                #calculo del costo de pasar por la casilla
-                costos += costoAcumulado(posicionNueva, juegoo)
-
-                if buscarElemento(nodoActual.camino, posicionNueva) == False and juegoo[posicionNueva.posx][posicionNueva.posy] != 5:
-                    caminoA.append(posicionNueva)
-                    nuevoNodo = nodo(posicionNueva, caminoA, profundidadA, costos)
-                    pila.append(nuevoNodo) 
-                    
-
-            # derecha
-            if (nodoActual.pos.posy < len(juegoo[0])-1):
-                posicionNueva = posicion(nodoActual.pos.posx, nodoActual.pos.posy+1)
-                profundidadA = nodoActual.profundidad + 1
-                caminoA = nodoActual.camino.copy()
-                costos = nodoActual.costo
-                #calculo del costo de pasar por la casilla
-                costos += costoAcumulado(posicionNueva, juegoo)
-
-                if buscarElemento(nodoActual.camino, posicionNueva) == False and juegoo[posicionNueva.posx][posicionNueva.posy] != 5:
-                    caminoA.append(posicionNueva)
-                    nuevoNodo = nodo(posicionNueva, caminoA, profundidadA, costos)
-                    pila.append(nuevoNodo)
-                    maxPro2 = maxPro
-                    aux = int(profundidadA)
-                    maxPro = maxProfundidad(aux, maxPro2)
-                    
-            # arriba
-            if (nodoActual.pos.posx > 0):
-                posicionNueva = posicion(nodoActual.pos.posx-1, nodoActual.pos.posy)
-                profundidadA = nodoActual.profundidad + 1
-                caminoA = nodoActual.camino.copy()
-                costos = nodoActual.costo
-                #calculo del costo de pasar por la casilla
-                costos += costoAcumulado(posicionNueva, juegoo)
-
-                if buscarElemento(nodoActual.camino, posicionNueva) == False and juegoo[posicionNueva.posx][posicionNueva.posy] != 5:
-                    caminoA.append(posicionNueva)
-                    nuevoNodo = nodo(posicionNueva, caminoA, profundidadA, costos)
-                    pila.append(nuevoNodo)
-                    maxPro = maxProfundidad(int(profundidadA), maxPro) 
-
-            # abajo
-            if nodoActual.pos.posx < len(juegoo)-1:
-                posicionNueva = posicion(nodoActual.pos.posx+1, nodoActual.pos.posy)
-                profundidadA = nodoActual.profundidad + 1
-                caminoA = nodoActual.camino.copy()
-                costos = nodoActual.costo
-                #calculo del costo de pasar por la casilla
-                costos += costoAcumulado(posicionNueva, juegoo)
-
-                if buscarElemento(nodoActual.camino, posicionNueva) == False and juegoo[posicionNueva.posx][posicionNueva.posy] != 5:
-                    caminoA.append(posicionNueva)
-                    nuevoNodo = nodo(posicionNueva, caminoA, profundidadA, costos)
-                    pila.append(nuevoNodo)
-                    maxPro = maxProfundidad(int(profundidadA), maxPro)    
-        
-            
-            for i in nodoActual.camino:
-                print(i.posx, i.posy)
-            print("nodo act---  fila,columna" , nodoActual.pos.posx, nodoActual.pos.posy)
-            print("el costo es:",nodoActual.costo)
-            print("la profundidad es:",nodoActual.profundidad)
-       
-        auxiliarProfundidad += 1 ## iterador
-    for i in caminoR:
-        print(i.posx, i.posy , "RESPUESTA")
-    return caminoR
-    
-
-
-profundidadIterativa(matriz)
+        while (len(Pila) != 0):
+            nodoAct = Pila.pop()
+            posX = nodoAct.pos.posx
+            posY = nodoAct.pos.posy
+            if Matriz[posX][posY] == 4:
+                return (nodoAct.camino)
+            if nodoAct.profundidad < maxPro:
+                ExpandirNodo(nodoAct)
+        maxPro+=1  
