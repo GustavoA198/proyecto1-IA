@@ -154,4 +154,4 @@ def busquedaAmplitud(juegoo):
     print("el costo es:",nodoActual.costo)
     return nodoActual.camino
 
-##busquedaAmplitud(matriz)
+busquedaAmplitud(matriz)

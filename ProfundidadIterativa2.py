@@ -1,6 +1,5 @@
 from nodoProfundidad import NodoProfundidad as nodo
 from posicion import Posicion
-import matriz
 
 
 def newG(new):
@@ -51,11 +50,8 @@ def ProfundidadIterativa(Matriz):
     global matrizA
     matrizA = Matriz
     Pinocho = index(Matriz, 1)
-    Meta = index(Matriz, 4)
-    print(Pinocho, "  ee",Pinocho.posx , "  ee",Pinocho.posy ,"  ee")
     maxPro = 0
-    ndo = True
-    while ndo == True:
+    while True:
         aux = []
         aux.append(Pinocho)
         nodoi = nodo(Pinocho, aux, 0, 0)
