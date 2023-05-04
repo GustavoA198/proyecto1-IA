@@ -144,6 +144,6 @@ def busquedaAmplitud(juegoo):
     for i in nodoActual.camino:
         print("(",i.posx,",", i.posy, ")")
     print("el costo es:",nodoActual.costo)
-    return nodoActual.camino,nodoActual.costo
+    return nodoActual.camino
 
 #busquedaAmplitud(matriz)
