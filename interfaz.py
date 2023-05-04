@@ -1,4 +1,4 @@
-import time
+from tkinter.font import Font
 from tkinter import *
 from PIL import Image, ImageTk
 from tkinter import filedialog as FileDialog
@@ -15,16 +15,18 @@ import ProfundidadIterativa as pIter
 4 -> geppeto
 5 -> sin camino """
 
-listaImg = ["img/vacio.jpg","img/pinocho1.jpg", "img\cigarrillo blanco.jpg","img/zorroBlanco.jpg","img/gepetoblanco.jpg","img/negro.jpg"]
-listaImgRes = ["img/verde.jpg","img/piverde.jpg", "img\cigarrillo verde.jpg","img/zorroverde.jpg","img/gepetoverde.jpg","img/negro.jpg"]
+listaImg = ["img/vacio.jpg","img\pinocho1marco.jpg", "img\cigarrillo blancomarco.jpg","img\zorroblancomarco.jpg","img\gepetoblancomarco.jpg","img/negro.jpg"]
+listaImgRes = ["img/verde.jpg","img\piVerdemarco.jpg", "img\cigarrillo verde marco.jpg","img\zorroverdemarco.jpg","img\gepetoverdemarco.jpg","img/negro.jpg"]
+
 
 # Funciones para los botones de búsqueda y carga de matriz
+
 def buscar_1():
     # Aquí va la lógica para Amplitud
     Dibujar2(mat)
-    camino = amp.busquedaAmplitud(mat)
-    time.sleep(0.2)
-    dibujarRespuesta(0,camino,mat)
+    nodo = amp.busquedaAmplitud(mat)
+    dibujarRespuesta(0,nodo[0],mat)
+    result.set(str(nodo[1]))
 
 def buscar_2():
     # Aquí va la lógica para Costo Uniforme
@@ -32,16 +34,16 @@ def buscar_2():
     pinocho = CostoUniform()
     pinocho.agenteP(mat)
     res = pinocho.respuesta
-    time.sleep(0.2)
     dibujarRespuesta(0,res[3],mat)
+
+    result.set(str(res[2]))
 
 def buscar_3():
     # Aquí va la lógica para Profundidad
     Dibujar2(mat)
-    camino = pIter.ProfundidadIterativa(mat) 
-    time.sleep(0.2)
-    dibujarRespuesta(0,camino,mat)
-
+    nodo = pIter.ProfundidadIterativa(mat) 
+    dibujarRespuesta(0,nodo[0],mat)
+    result.set(str(nodo[1]))
 
 def cargar_matriz():
     ruta = FileDialog.askopenfilename(title="Abrir un fichero",initialdir="C:",
@@ -51,8 +53,9 @@ def cargar_matriz():
     global mat
     mat = Matrizz.crearMat(ruta).copy()
     global matriz 
-    matriz = Frame(ventana, width=570, height=600)
-    matriz.place(x=125, y=50)
+    matriz = Frame(ventana, width=570, height=600,bg= "white")
+    matriz.place(x=125, y=100)
+    result.set("")
 
     global imgObjects
     global imgObjectsRes
@@ -64,23 +67,41 @@ def cargar_matriz():
 
 # Crear ventana
 ventana = Tk()
-ventana.title("Proyecto de IA" )
-ventana.config(height=570,width=850)
+ventana.title("Proyecto de IA")
+ventana.config(bg= "white")
+imagen = ImageTk.PhotoImage(Image.open("img/fondo pinocho2jpg.jpg").resize((810,590),Image.ANTIALIAS))
+Label(ventana, image=imagen, bd=0).pack()
+fuente =  Font(family="Roboto Cn", size=14)
+lCosto = Label(ventana,text = "Costo")
+lCosto.place(x=720,y=120)
+lCosto.config(font = fuente, bg = "white")
 
+result = StringVar()
+pCosto = Label(ventana,textvariable=result)
+pCosto.place(x=735,y=150)
+pCosto.config(font = fuente, bg = "white")
 # Crear botones de búsqueda y carga de matriz
-btn_busq_1 = Button(ventana, text="Búsqueda por Amplitud", command=buscar_1)
-btn_busq_2 = Button(ventana, text="Búsqueda por Costo Uniforme", command=buscar_2)
-btn_busq_3 = Button(ventana, text="Búsqueda por Profunfidad Iterativa", command=buscar_3)
-btn_cargar = Button(ventana, text="Cargar matriz", command=cargar_matriz)
+
+images_1 = ImageTk.PhotoImage(Image.open("img/amplitud.jpg").resize((150,40),Image.ANTIALIAS))
+btn_busq_1 = Button(ventana, image=images_1, command=buscar_1)
+
+images_2 = ImageTk.PhotoImage(Image.open("img\costo uniforme.jpg").resize((150,40),Image.ANTIALIAS))
+btn_busq_2 = Button(ventana, image=images_2, command=buscar_2)
+
+images_3 = ImageTk.PhotoImage(Image.open("img\iterativa.jpg").resize((150,40),Image.ANTIALIAS))
+btn_busq_3 = Button(ventana, image=images_3, command=buscar_3)
+
+images_4 = ImageTk.PhotoImage(Image.open("img\cargar matriz.jpg").resize((150,40),Image.ANTIALIAS))
+btn_cargar = Button(ventana, image=images_4, command=cargar_matriz)
 
 # Colocar botones en la ventana
-btn_busq_1.place(x=20, y=10,)
-btn_busq_2.place(x=170, y=10)
-btn_busq_3.place(x=355, y=10)
-btn_cargar.place(x=750, y=10)
+btn_busq_1.place(x=20, y=50,)
+btn_busq_2.place(x=175, y=50)
+btn_busq_3.place(x=330, y=50)
+btn_cargar.place(x=600, y=50)
 
-# Crear espacio para la matriz de imágenes
 
+##-----funciones Auxiliares -------
 
 # Crear lista de objetos de imágenes
 def crearImagenes(listImg,tam):
@@ -92,6 +113,7 @@ def crearImagenes(listImg,tam):
         imgObjects.append(image)
     return imgObjects
 
+# dibuja el ambiente que hay en la matriz con animaciones
 def dibujar(time,fila, columna,matrix): 
     if fila >= len(matrix):
         return
@@ -100,20 +122,21 @@ def dibujar(time,fila, columna,matrix):
         columna = 0
     if columna < len(matrix[0]) and fila < len(matrix):
         aux=int(matrix[fila][columna])
-        Label(matriz, image=imgObjects[aux]).grid(row=fila, column=columna)
+        Label(matriz, image=imgObjects[aux], bg= "white").grid(row=fila, column=columna)
     matriz.after(time, lambda: dibujar(time,fila, columna+1,matrix))
 
+#dibuja el TODO ambiente de la matriz instataneamente
 def Dibujar2(matrizz):
     for i in range (len(matrizz)):
         for j in range (len(matrizz[i])):
             aux=int(matrizz[i][j])
-            Label(matriz, image=imgObjects[aux]).grid(row=i, column=j)
-    
+            Label(matriz, image=imgObjects[aux],bg= "white").grid(row=i, column=j)
+ #dibuja el camino de respuesta del algoritmo correspondiente   
 def dibujarRespuesta(index,lista,matrix):
     if index < len(lista):
         pos = lista[index]
         aux = matrix[pos.posx][pos.posy]
-        Label(matriz, image=imgObjectsRes[aux]).grid(row=pos.posx, column=pos.posy)
+        Label(matriz, image=imgObjectsRes[aux],bg= "white").grid(row=pos.posx, column=pos.posy)
         matriz.after(100, lambda: dibujarRespuesta(index+1,lista,matrix))
 
 # Iniciar bucle principal de la ventana

@@ -25,10 +25,19 @@ class CostoUniform:
         copia = camino.copy()
         if (y >= 0 and y<len(matriz) and x>=0 and x < len(matriz[0])):
             new = self.newG(int(matriz[y][x]))
-            if (new != 5):
+            if (new != 5 and not(Posicion.existe(self,Posicion(y,x),copia))):
                 copia.append(Posicion(y,x))
                 return [y,x,new+g ,copia]
         return [0]
+    
+    #imprime un nodo
+    def Verificador(self, nodo):
+        aux=str(nodo[0]) + " " + str(nodo[1]) + " " + str(nodo[2])+ " "
+        for i in nodo[3]:
+            aux = aux + " "+ str(i.posx) + " " +str(i.posy)
+        print(aux)
+
+
 
     #  Este metodo inserta un elemento en su posicion correspondiente 
     #  segun la costo acumulado, organizando cada en nodo en la lista 
@@ -39,6 +48,7 @@ class CostoUniform:
                 self.pila.insert(i,newNodo)
                 return None
         self.pila.append(newNodo)
+        self.Verificador(newNodo)
 
     #la funcion recibe un posicon recibe un nodo a expandir
     #este crear una lista con cuatro nodos, los correspondiente
@@ -97,8 +107,8 @@ class CostoUniform:
     [1, 5, 0, 0, 0],
     [0, 0, 5, 5, 4],
     [0, 0, 0, 2, 0],
-    [0, 0, 0, 0, 0]]"""
-#print(juego)
-#p = CostoUniform()
-#p.agenteP(juego)
-#print(p.respuesta , "PPPPPPPPPP")  
+    [0, 0, 0, 0, 0]]
+print(juego)
+p = CostoUniform()
+p.agenteP(juego)
+print(p.respuesta , "PPPPPPPPPP")"""  
