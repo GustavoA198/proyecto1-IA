@@ -25,30 +25,36 @@ class CostoUniform:
         copia = camino.copy()
         if (y >= 0 and y<len(matriz) and x>=0 and x < len(matriz[0])):
             new = self.newG(int(matriz[y][x]))
-            if (new != 5):
+            if (new != 5 and not(Posicion.existe(self,Posicion(y,x),copia))):
                 copia.append(Posicion(y,x))
                 return [y,x,new+g ,copia]
         return [0]
+    
+    #imprime un nodo
+    def Verificador(self, nodo):
+        aux=str(nodo[0]) + " " + str(nodo[1]) + " " + str(nodo[2])+ " "
+        for i in nodo[3]:
+            aux = aux + " "+ str(i.posx) + " " +str(i.posy)
+        print(aux)
+
 
 
     #  Este metodo inserta un elemento en su posicion correspondiente 
     #  segun la costo acumulado, organizando cada en nodo en la lista 
     #  de mayor a menor.
-
     def Agregar (self,newNodo):
         for i,nodo in enumerate(self.pila):
             if newNodo[2]>nodo[2]:
                 self.pila.insert(i,newNodo)
                 return None
         self.pila.append(newNodo)
+        self.Verificador(newNodo)
 
     #la funcion recibe un posicon recibe un nodo a expandir
     #este crear una lista con cuatro nodos, los correspondiente
     # a moverse arriba, abajo,derecha o izquierda
-
     # despues recorre la lista, en la que mediente un if decidimos si agregar o no,
     # cada nodo a la pila
-        
     def Extender (self,pos,matriz):
         g = pos[2]
         camino = pos[3].copy()
@@ -64,7 +70,6 @@ class CostoUniform:
 
     # esta funcion recibe un matriz que representa el ambiente actual y una letra a buscar
     # se buscar la letra dentro de la matriz y se retorna una tupla con  "y" y "x" 
-
     def index(self,Matriz, buscar):
         index = (0,0)
         for y, fila in enumerate(Matriz):
@@ -78,7 +83,6 @@ class CostoUniform:
     # se guaeda la posicion  de pinocho y la de geppetto
     # se crea el primer nodo y se agrega a la pila
     # expandimos nodos de la pila mientras se llega a la meta o ya no hayan mas nodos a expandir
-
     def agenteP (self,MatrizPos):
         Pinocho = self.index(MatrizPos, 1)
         Meta =self.index(MatrizPos, 4)
@@ -91,20 +95,20 @@ class CostoUniform:
             nodoAct =self.pila.pop()
             posAct = (nodoAct[0], nodoAct[1])
             metaAux = (Meta.posx , Meta.posy)
-            print( posAct , "========" , metaAux)
+            ##print( posAct , "========" , metaAux)
             if (posAct == metaAux):
                 isMeta = True
             else:
                 self.Extender (nodoAct,MatrizPos)
         self.respuesta = nodoAct
 ## PRUEBA
-juego = [
+"""juego = [
     [0, 3, 0, 3, 0],
     [1, 5, 0, 0, 0],
     [0, 0, 5, 5, 4],
     [0, 0, 0, 2, 0],
     [0, 0, 0, 0, 0]]
-#print(juego)
-#p = CostoUniform()
-#p.agenteP(juego)
-#print(p.respuesta , "PPPPPPPPPP")  
+print(juego)
+p = CostoUniform()
+p.agenteP(juego)
+print(p.respuesta , "PPPPPPPPPP")"""  
