@@ -59,7 +59,7 @@ def ProfundidadIterativa(Matriz):
             posX = nodoAct.pos.posx
             posY = nodoAct.pos.posy
             if Matriz[posX][posY] == 4:
-                return (nodoAct.camino)
+                return (nodoAct.camino,nodoAct.costo)
             if nodoAct.profundidad < maxPro:
                 ExpandirNodo(nodoAct)
         maxPro+=1  
