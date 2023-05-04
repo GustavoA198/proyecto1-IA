@@ -3,5 +3,3 @@ class Nodo:
         self.pos = pos
         self.camino = camino
         self.costo = costo
-    
-   
