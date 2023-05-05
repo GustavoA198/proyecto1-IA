@@ -25,7 +25,7 @@ class CostoUniform:
         copia = camino.copy()
         if (y >= 0 and y<len(matriz) and x>=0 and x < len(matriz[0])):
             new = self.newG(int(matriz[y][x]))
-            if (new != 5 and not(Posicion.existe(self,Posicion(y,x),copia))):
+            if (new != 5 and Posicion(y,x).existe(copia)):
                 copia.append(Posicion(y,x))
                 return [y,x,new+g ,copia]
         return [0]
@@ -46,6 +46,7 @@ class CostoUniform:
         for i,nodo in enumerate(self.pila):
             if newNodo[2]>nodo[2]:
                 self.pila.insert(i,newNodo)
+                self.Verificador(newNodo)
                 return None
         self.pila.append(newNodo)
         self.Verificador(newNodo)
@@ -58,11 +59,11 @@ class CostoUniform:
     def Extender (self,pos,matriz):
         g = pos[2]
         camino = pos[3].copy()
-        newNodos = []
+        newNodos = []    
+        newNodos.append(self.crearNodo(pos[0],pos[1]-1,g,camino,matriz)) ## moverse izquierda
         newNodos.append(self.crearNodo(pos[0]-1,pos[1],g,camino,matriz)) ## moverse arriba
         newNodos.append(self.crearNodo(pos[0]+1,pos[1],g,camino,matriz)) ## moverse abajo
-        newNodos.append(self.crearNodo(pos[0],pos[1]+1,g,camino,matriz)) ## moverse derecha    
-        newNodos.append(self.crearNodo(pos[0],pos[1]-1,g,camino,matriz)) ## moverse izquierda
+        newNodos.append(self.crearNodo(pos[0],pos[1]+1,g,camino,matriz)) ## moverse derecha
 
         for newNodo in newNodos: ## decide si agregar o NO un nuevo nodo a la pila
             if (newNodo != [0]):

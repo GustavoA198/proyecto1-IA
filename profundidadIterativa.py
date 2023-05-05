@@ -8,9 +8,15 @@ def newG(new):
         return 1
     return new
 
+def Verificador(nodo):
+        aux=str(nodo.pos.posx) + " " + str(nodo.pos.posy) + " " + str(nodo.costo)+ " "
+        for i in nodo.camino:
+            aux = aux + " "+ str(i.posx) + " " +str(i.posy)
+        print(aux)
+
 def crearNodo(y, x, g, p, camino, matriz):
     copia = camino.copy()
-    if (y >= 0 and y < len(matriz) and x >= 0 and x < len(matriz[0])):
+    if (y >= 0 and y < len(matriz) and x >= 0 and x < len(matriz[0]) and Posicion(y,x).existe(copia)):
         new = newG(int(matriz[y][x]))
         if (new != 5):
             copia.append(Posicion(y, x))
@@ -32,6 +38,7 @@ def ExpandirNodo(nodo):
     for newNodo in newNodos:  # decide si agregar o NO un nuevo nodo a la pila
         if (newNodo != [0]):
             Pila.append(newNodo)
+            Verificador(newNodo)
 
 def index(Matriz, buscar):
     index = (0, 0)
