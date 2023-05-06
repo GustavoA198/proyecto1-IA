@@ -74,5 +74,5 @@ def ProfundidadIterativa(Matriz):
                 ExpandirNodo(nodoAct)
                 expandido.append((nodoAct.pos.posx,nodoAct.pos.posy))
         maxPro+=1
-        expandido1.appende(expandido.copy())  
+        expandido1.append(expandido.copy())  
     
