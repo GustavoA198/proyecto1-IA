@@ -14,10 +14,8 @@ from posicion import Posicion as posicion
     [0, 0, 5, 5, 4],
     [0, 0, 0, 2, 0],
     [0, 0, 0, 0, 0]
-]
-"""
+]"""
 
-cola = []
 def Verificador(nodo):
         aux=str(nodo.pos.posx) + " " + str(nodo.pos.posy) + " " +str(nodo.profundidad)+""+ str(nodo.costo)+ " "
         for i in nodo.camino:
@@ -127,9 +125,12 @@ def busquedaAmplitud(juegoo):
     pos = posicion(pinocho[0], pinocho[1])
     inicio = nodo(pos, [pos],0, 0) #raiz
     expandidos = []
+    
+    global cola
+    cola = []
     cola.append(inicio)  # añado el nodo raiz
     # inicio de la busqueda amplitud
-    iterador = 0 # selecciona el orden de izquierda o derecha
+
     while (True):
         if len(cola) == 0:
             print("No encontré")
@@ -154,7 +155,7 @@ def busquedaAmplitud(juegoo):
             izquierda(nodoActual, juegoo)  # izquierda num 4
             derecha(nodoActual,juegoo) # derecha num 3
             abajo(nodoActual, juegoo) # abajo num 2
-            arriba(nodoActual, juegoo)  # arriba num 1
+            arriba(nodoActual, juegoo)  # arriba num 1a
 
     #imprimir los indices del camino rrecorrido por el ultimo nodo expandido        
     print(expandidos)

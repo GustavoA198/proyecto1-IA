@@ -53,6 +53,7 @@ def ProfundidadIterativa(Matriz):
     matrizA = Matriz
     Pinocho = index(Matriz, 1)
     maxPro = 0
+    expandido1 = []
     while True:
         aux = []
         aux.append(Pinocho)
@@ -62,11 +63,16 @@ def ProfundidadIterativa(Matriz):
         Pila.append(nodoi)
 
         while (len(Pila) != 0):
+            expandido = []
             nodoAct = Pila.pop()
             posX = nodoAct.pos.posx
             posY = nodoAct.pos.posy
             if Matriz[posX][posY] == 4:
+                print(expandido1)
                 return (nodoAct.camino,nodoAct.costo)
             if nodoAct.profundidad < maxPro:
                 ExpandirNodo(nodoAct)
-        maxPro+=1  
+                expandido.append((nodoAct.pos.posx,nodoAct.pos.posy))
+        maxPro+=1
+        expandido1.appende(expandido.copy())  
+    

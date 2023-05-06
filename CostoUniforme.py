@@ -90,7 +90,7 @@ class CostoUniform:
         Nodo1 = [Pinocho.posx,Pinocho.posy,0,[Pinocho]]
 
         self.pila.append(Nodo1)
-
+        extender= []
         isMeta = False
         while not(isMeta):
             nodoAct =self.pila.pop()
@@ -101,7 +101,10 @@ class CostoUniform:
                 isMeta = True
             else:
                 self.Extender (nodoAct,MatrizPos)
+                extender.append((nodoAct[0],nodoAct[1]))
+
         self.respuesta = nodoAct
+        print(extender)
 ## PRUEBA
 """juego = [
     [0, 3, 0, 3, 0],

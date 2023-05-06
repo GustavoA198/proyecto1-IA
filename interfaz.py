@@ -72,13 +72,14 @@ ventana.config(bg= "white")
 imagen = ImageTk.PhotoImage(Image.open("img/fondo pinocho2jpg.jpg").resize((810,590),Image.ANTIALIAS))
 Label(ventana, image=imagen, bd=0).pack()
 fuente =  Font(family="Roboto Cn", size=14)
-lCosto = Label(ventana,text = "Costo")
-lCosto.place(x=720,y=120)
+imagen2 = ImageTk.PhotoImage(Image.open("img\costo.png").resize((120,40),Image.ANTIALIAS))
+lCosto = Label(ventana,image = imagen2)
+lCosto.place(x=620,y=120)
 lCosto.config(font = fuente, bg = "white")
 
 result = StringVar()
 pCosto = Label(ventana,textvariable=result)
-pCosto.place(x=735,y=150)
+pCosto.place(x=670,y=170)
 pCosto.config(font = fuente, bg = "white")
 # Crear botones de búsqueda y carga de matriz
 
