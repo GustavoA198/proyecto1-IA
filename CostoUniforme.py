@@ -16,7 +16,7 @@ class CostoUniform:
     4 -> geppeto
     5 -> sin camino """
 
-    def newG (self,new):
+    def newG (self,new):# determina el costo de moverse a una posicion
         if new == 0 :return 1
         elif new == 4 : return 1
         return new
@@ -42,14 +42,14 @@ class CostoUniform:
     #  Este metodo inserta un elemento en su posicion correspondiente 
     #  segun la costo acumulado, organizando cada en nodo en la lista 
     #  de mayor a menor.
-    def Agregar (self,newNodo):
+    def Agregar (self,newNodo): # agrega los nodos de manera ordenada (mayor a menor)
         for i,nodo in enumerate(self.pila):
-            if newNodo[2]>nodo[2]:
+            if newNodo[2]>nodo[2]: #compara costos
                 self.pila.insert(i,newNodo)
                 self.Verificador(newNodo)
-                return None
+                return
         self.pila.append(newNodo)
-        self.Verificador(newNodo)
+        self.Verificador(newNodo) #imprime un nodo
 
     #la funcion recibe un posicon recibe un nodo a expandir
     #este crear una lista con cuatro nodos, los correspondiente
@@ -59,7 +59,7 @@ class CostoUniform:
     def Extender (self,pos,matriz):
         g = pos[2]
         camino = pos[3].copy()
-        newNodos = []    
+        newNodos = []  #lista auxiliar donde se añaden los posible nuevos nodos
         newNodos.append(self.crearNodo(pos[0],pos[1]-1,g,camino,matriz)) ## moverse izquierda
         newNodos.append(self.crearNodo(pos[0]-1,pos[1],g,camino,matriz)) ## moverse arriba
         newNodos.append(self.crearNodo(pos[0]+1,pos[1],g,camino,matriz)) ## moverse abajo
@@ -67,7 +67,7 @@ class CostoUniform:
 
         for newNodo in newNodos: ## decide si agregar o NO un nuevo nodo a la pila
             if (newNodo != [0]):
-                self.Agregar(newNodo) 
+                self.Agregar(newNodo) #agregar ordenadamente los nodos
 
     # esta funcion recibe un matriz que representa el ambiente actual y una letra a buscar
     # se buscar la letra dentro de la matriz y se retorna una tupla con  "y" y "x" 
@@ -85,15 +85,15 @@ class CostoUniform:
     # se crea el primer nodo y se agrega a la pila
     # expandimos nodos de la pila mientras se llega a la meta o ya no hayan mas nodos a expandir
     def agenteP (self,MatrizPos):
-        Pinocho = self.index(MatrizPos, 1)
-        Meta =self.index(MatrizPos, 4)
-        Nodo1 = [Pinocho.posx,Pinocho.posy,0,[Pinocho]]
+        Pinocho = self.index(MatrizPos, 1) #encotramos a pinocho
+        Meta =self.index(MatrizPos, 4) # encontramos la meta
+        Nodo1 = [Pinocho.posx,Pinocho.posy,0,[Pinocho]] # creamos el nodo inicial
 
         self.pila.append(Nodo1)
-        extender= []
+        extender= [] # lista aux que guarda la posicion de cada nodo expandido
         isMeta = False
         while not(isMeta):
-            nodoAct =self.pila.pop()
+            nodoAct =self.pila.pop() #saco al ultimo de la cola de prioridad
             posAct = (nodoAct[0], nodoAct[1])
             metaAux = (Meta.posx , Meta.posy)
             ##print( posAct , "========" , metaAux)
@@ -106,13 +106,4 @@ class CostoUniform:
         self.respuesta = nodoAct
         print(extender)
 ## PRUEBA
-"""juego = [
-    [0, 3, 0, 3, 0],
-    [1, 5, 0, 0, 0],
-    [0, 0, 5, 5, 4],
-    [0, 0, 0, 2, 0],
-    [0, 0, 0, 0, 0]]
-print(juego)
-p = CostoUniform()
-p.agenteP(juego)
-print(p.respuesta , "PPPPPPPPPP")"""  
+ 

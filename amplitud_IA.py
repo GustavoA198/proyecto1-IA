@@ -65,8 +65,8 @@ def arriba(nodoActual, juego):
         if juego[posicionNueva.posx][posicionNueva.posy] != 5 and posicionNueva.existe(caminoA):
             caminoA.append(posicionNueva)
             nuevoNodo = nodo(posicionNueva, caminoA, newP, costos)
-            Verificador(nuevoNodo)
-            agregar(nuevoNodo) 
+            Verificador(nuevoNodo) # imprime cada nodo creado
+            agregar(nuevoNodo)  # crea el nodo
 
 #expandir el nodo de abajo
 def abajo(nodoActual, juego):
@@ -121,9 +121,9 @@ def derecha(nodoActual, juego):
 
 def busquedaAmplitud(juegoo):    
     # nodo inicial
-    pinocho = buscarPinocho(juegoo)
+    pinocho = buscarPinocho(juegoo) # se busca la posicion en la matriz
     pos = posicion(pinocho[0], pinocho[1])
-    inicio = nodo(pos, [pos],0, 0) #raiz
+    inicio = nodo(pos, [pos],0, 0) #nodo raiz
     expandidos = []
     
     global cola
@@ -136,15 +136,16 @@ def busquedaAmplitud(juegoo):
             print("No encontré")
             break
         #expando el nodo actual
-        nodoActual = cola.pop(0)
+        nodoActual = cola.pop(0) # sacamos el primero de la lista
         posX = nodoActual.pos.posx
         posY = nodoActual.pos.posy
         
-        # paro si encontré a gepetto
+        # pregunto si es meta
         if juegoo[posX][posY] == 4:
             print("Encontre")
             break
-        #print(nodoActual.costo , "costo")  
+
+        #Expando 
         expandidos.append((posX,posY))
         if(nodoActual.profundidad % 2 == 1):
             arriba(nodoActual, juegoo)  # arriba num 1

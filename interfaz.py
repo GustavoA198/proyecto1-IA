@@ -24,7 +24,7 @@ listaImgRes = ["img/verde.jpg","img\piVerdemarco.jpg", "img\cigarrillo verde mar
 def buscar_1():
     # Aquí va la lógica para Amplitud
     Dibujar2(mat)
-    nodo = amp.busquedaAmplitud(mat)
+    nodo = amp.busquedaAmplitud(mat) #(camino,g)
     dibujarRespuesta(0,nodo[0],mat)
     result.set(str(nodo[1]))
 
@@ -33,7 +33,7 @@ def buscar_2():
     Dibujar2(mat)
     pinocho = CostoUniform()
     pinocho.agenteP(mat)
-    res = pinocho.respuesta
+    res = pinocho.respuesta #[x,y,g,camino]
     dibujarRespuesta(0,res[3],mat)
 
     result.set(str(res[2]))
@@ -41,8 +41,8 @@ def buscar_2():
 def buscar_3():
     # Aquí va la lógica para Profundidad
     Dibujar2(mat)
-    nodo = pIter.ProfundidadIterativa(mat) 
-    dibujarRespuesta(0,nodo[0],mat)
+    nodo = pIter.ProfundidadIterativa(mat)  #(camino,g)
+    dibujarRespuesta(0,nodo[0],mat)  
     result.set(str(nodo[1]))
 
 def cargar_matriz():
@@ -127,7 +127,7 @@ def dibujar(time,fila, columna,matrix):
     matriz.after(time, lambda: dibujar(time,fila, columna+1,matrix))
 
 #dibuja el TODO ambiente de la matriz instataneamente
-def Dibujar2(matrizz):
+def Dibujar2(matrizz): # vacea lo dibujado
     for i in range (len(matrizz)):
         for j in range (len(matrizz[i])):
             aux=int(matrizz[i][j])

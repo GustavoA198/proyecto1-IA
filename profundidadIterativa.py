@@ -1,31 +1,31 @@
 from nodoProfundidad import NodoProfundidad as nodo
 from posicion import Posicion
 
-def newG(new):
+def newG(new): # determina el costo de moverse a una posicion
     if new == 0:
         return 1
     elif new == 4:
         return 1
     return new
 
-def Verificador(nodo):
+def Verificador(nodo): #imprime un nodo
         aux=str(nodo.pos.posx) + " " + str(nodo.pos.posy) + " " + str(nodo.costo)+ " "
         for i in nodo.camino:
             aux = aux + " "+ str(i.posx) + " " +str(i.posy)
         print(aux)
 
-def crearNodo(y, x, g, p, camino, matriz):
+def crearNodo(y, x, g, p, camino, matriz): # crea un nodo
     copia = camino.copy()
     if (y >= 0 and y < len(matriz) and x >= 0 and x < len(matriz[0]) and Posicion(y,x).existe(copia)):
-        new = newG(int(matriz[y][x]))
+        new = newG(int(matriz[y][x])) # el costo de movermme a una posicion
         if (new != 5):
             copia.append(Posicion(y, x))
             return nodo(Posicion(y, x), copia, p+1, new+g)
     return [0]
 
-def ExpandirNodo(nodo):
+def ExpandirNodo(nodo): # añade nodos creado a la pila principal
     camino = nodo.camino.copy()
-    newNodos = []
+    newNodos = [] #lista auxiliar donde se añaden los posible nuevos nodos
     newNodos.append(crearNodo(nodo.pos.posx - 1, nodo.pos.posy,
                     nodo.costo, nodo.profundidad, camino, matrizA))  # moverse arriba num4
     newNodos.append(crearNodo(nodo.pos.posx+1, nodo.pos.posy, nodo.costo,
@@ -37,10 +37,10 @@ def ExpandirNodo(nodo):
 
     for newNodo in newNodos:  # decide si agregar o NO un nuevo nodo a la pila
         if (newNodo != [0]):
-            Pila.append(newNodo)
-            Verificador(newNodo)
+            Pila.append(newNodo) 
+            Verificador(newNodo)# imprime el nodo
 
-def index(Matriz, buscar):
+def index(Matriz, buscar): # busca Pinocho
     index = (0, 0)
     for y, fila in enumerate(Matriz):
         for x, dato in enumerate(fila):
@@ -51,19 +51,16 @@ def index(Matriz, buscar):
 def ProfundidadIterativa(Matriz):
     global matrizA
     matrizA = Matriz
-    Pinocho = index(Matriz, 1)
+    Pinocho = index(Matriz, 1) #busco a pinocho
     maxPro = 0
-    expandido1 = []
+    expandido1 = [] # auxiliar para guarda nodos expandidos
     while True:
-        aux = []
-        aux.append(Pinocho)
-        nodoi = nodo(Pinocho, aux, 0, 0)
+        nodoi = nodo(Pinocho, [Pinocho], 0, 0) #nodo inicial
         global Pila
         Pila = []
         Pila.append(nodoi)
-
+        expandido = []
         while (len(Pila) != 0):
-            expandido = []
             nodoAct = Pila.pop()
             posX = nodoAct.pos.posx
             posY = nodoAct.pos.posy
@@ -74,5 +71,6 @@ def ProfundidadIterativa(Matriz):
                 ExpandirNodo(nodoAct)
                 expandido.append((nodoAct.pos.posx,nodoAct.pos.posy))
         maxPro+=1
-        expandido1.append(expandido.copy())  
+        aux = expandido.copy()
+        expandido1.append(aux)  
     
